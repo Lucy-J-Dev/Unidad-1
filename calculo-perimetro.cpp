@@ -1,29 +1,39 @@
 #include <iostream>
-#include <limits> // Para numeric_limits
+#include <iomanip>  // Para formatear la tabla
+#include <limits>
+#include <vector>
 using namespace std;
 
-// Función para leer un número válido (entero o decimal, positivo)
+// Estructura para guardar cada cálculo
+struct Calculo {
+    int numero;
+    double largo;
+    double ancho;
+    double perimetro;
+};
+
+// Función para leer un número válido (positivo)
 double leerNumero(const string& mensaje) {
     double valor;
     while (true) {
         cout << mensaje;
         cin >> valor;
 
-        if (cin.fail()) { // Si la entrada no es un número
-            cin.clear(); // Limpia el estado de error
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta lo que haya en el buffer
-            cout << "❌ Entrada invalida. Por favor ingrese un numero (entero o decimal)." << endl;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "❌ Entrada invalida. Por favor ingrese un numero valido." << endl;
         } 
-        else if (valor <= 0) { // Validar que no sea negativo ni cero
+        else if (valor <= 0) {
             cout << "❌ El valor debe ser mayor que 0. Intente nuevamente." << endl;
-        }
+        } 
         else {
-            return valor; // Número válido
+            return valor;
         }
     }
 }
 
-// Función para leer la opción del usuario (s/S/n/N)
+// Función para leer opción de salida (s/S/n/N)
 char leerOpcion(const string& mensaje) {
     char opcion;
     while (true) {
@@ -39,25 +49,68 @@ char leerOpcion(const string& mensaje) {
 }
 
 int main() {
+    string nombre;
     double largo, ancho, perimetro;
     char opcion;
+    vector<Calculo> historial;
+    int contador = 1;
+
+    // Mensaje de bienvenida
+    cout << "==============================================" << endl;
+    cout << "   👋 Bienvenido al programa Calculadora de Perimetros" << endl;
+    cout << "==============================================" << endl;
+    cout << "Este programa calcula el perimetro de un rectangulo." << endl;
+    cout << "La formula usada es: P = 2 * (largo + ancho)" << endl;
+    cout << "----------------------------------------------" << endl;
+
+    // Capturar nombre del usuario
+    cout << "Por favor ingrese su nombre: ";
+    getline(cin, nombre);
+
+    cout << "\n¡Hola, " << nombre << "! 😊 Vamos a comenzar...\n" << endl;
 
     do {
-        // Pedir dimensiones del rectángulo
+        // Leer dimensiones
         largo = leerNumero("Ingrese el largo del rectangulo: ");
         ancho = leerNumero("Ingrese el ancho del rectangulo: ");
 
-        // Calcular el perímetro
+        // Calcular perímetro
         perimetro = 2 * (largo + ancho);
 
-        // Mostrar el resultado
-        cout << "✅ El perimetro del rectangulo es: " << perimetro << endl;
+        // Mostrar resultado
+        cout << "✅ " << nombre << ", el perimetro del rectangulo es: " << perimetro << endl;
 
-        // Preguntar si desea continuar (valida solo s/S/n/N)
+        // Guardar en historial
+        historial.push_back({contador, largo, ancho, perimetro});
+        contador++;
+
+        // Preguntar si desea continuar
         opcion = leerOpcion("¿Desea calcular el perimetro de otro rectangulo? (s/n): ");
 
     } while (opcion == 's' || opcion == 'S');
 
-    cout << "👋 Programa finalizado. ¡Gracias por usarlo!" << endl;
+    // Mostrar informe final
+    cout << "\n==============================================" << endl;
+    cout << "📊 Informe de Calculos Realizados por " << nombre << endl;
+    cout << "==============================================" << endl;
+
+    if (historial.empty()) {
+        cout << "No se realizaron calculos." << endl;
+    } else {
+        cout << left << setw(10) << "N°"
+             << setw(15) << "Largo"
+             << setw(15) << "Ancho"
+             << setw(20) << "Perimetro" << endl;
+        cout << string(60, '-') << endl;
+
+        for (const auto& calc : historial) {
+            cout << left << setw(10) << calc.numero
+                 << setw(15) << calc.largo
+                 << setw(15) << calc.ancho
+                 << setw(20) << calc.perimetro << endl;
+        }
+    }
+
+    cout << "\n👋 Gracias por usar el programa, " << nombre << ". ¡Hasta pronto!" << endl;
     return 0;
 }
