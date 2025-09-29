@@ -2,6 +2,8 @@
 #include <iomanip>  // Para formatear la tabla
 #include <limits>
 #include <vector>
+#include <cstdlib>  // Para rand()
+#include <ctime>    // Para srand()
 using namespace std;
 
 // Estructura para guardar cada cálculo
@@ -35,16 +37,59 @@ double leerNumero(const string& mensaje) {
 
 // Función para leer opción de salida (s/S/n/N)
 char leerOpcion(const string& mensaje) {
-    char opcion;
+    string entrada;
     while (true) {
         cout << mensaje;
-        cin >> opcion;
+        cin >> entrada;
 
-        if (opcion == 's' || opcion == 'S' || opcion == 'n' || opcion == 'N') {
-            return opcion;
-        } else {
-            cout << "❌ Opcion invalida. Ingrese 's' para continuar o 'n' para salir." << endl;
+        if (entrada.size() == 1) {
+            char opcion = entrada[0];
+            if (opcion == 's' || opcion == 'S' || opcion == 'n' || opcion == 'N') {
+                return opcion;
+            }
         }
+        cout << "❌ Opcion invalida. Ingrese 's' para continuar o 'n' para salir." << endl;
+    }
+}
+
+// Función para mostrar un gráfico del rectángulo en ASCII
+void dibujarRectangulo(double largo, double ancho) {
+    cout << "📐 Representacion aproximada del rectangulo:" << endl;
+
+    // Escalar para no imprimir rectángulos gigantes
+    int maxTam = 20; 
+    int alto = (ancho > maxTam) ? maxTam : (int)ancho;
+    int largoEscalado = (largo > maxTam) ? maxTam : (int)largo;
+
+    for (int i = 0; i < alto; i++) {
+        for (int j = 0; j < largoEscalado; j++) {
+            cout << "* ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+// Función para hacer el quiz final
+void quizFinal(const string& nombre) {
+    srand(time(0)); // Semilla aleatoria
+    double largo = (rand() % 20) + 1; // valores entre 1 y 20
+    double ancho = (rand() % 20) + 1;
+    double respuestaCorrecta = 2 * (largo + ancho);
+
+    cout << "==============================================" << endl;
+    cout << "🎯 Quiz Final para " << nombre << endl;
+    cout << "==============================================" << endl;
+    cout << "Dado un rectangulo de largo = " << largo 
+         << " y ancho = " << ancho << endl;
+    cout << "👉 ¿Cual es su perimetro?" << endl;
+
+    double respuestaUsuario = leerNumero("Tu respuesta: ");
+
+    if (respuestaUsuario == respuestaCorrecta) {
+        cout << "✅ Correcto, excelente trabajo!" << endl;
+    } else {
+        cout << "❌ Incorrecto. El perimetro correcto es: " << respuestaCorrecta << endl;
     }
 }
 
@@ -84,6 +129,9 @@ int main() {
         // Mostrar resultado
         cout << "✅ " << nombre << ", el perimetro del rectangulo es: " << perimetro << "\n" << endl;
 
+        // Mostrar gráfico
+        dibujarRectangulo(largo, ancho);
+
         // Guardar en historial
         historial.push_back({contador, largo, ancho, perimetro});
         contador++;
@@ -114,6 +162,14 @@ int main() {
                  << setw(15) << calc.ancho
                  << setw(20) << calc.perimetro << endl;
         }
+    }
+
+    // Preguntar si quiere hacer el quiz
+    opcion = leerOpcion("\n🤔 ¿Quieres tomar un quiz final para practicar? (s/n): ");
+    if (opcion == 's' || opcion == 'S') {
+        quizFinal(nombre);
+    } else {
+        cout << "👍 No hay problema, quiz omitido." << endl;
     }
 
     cout << "\n👋 Gracias por usar el programa, " << nombre << ". ¡Hasta pronto!" << endl;
