@@ -67,9 +67,13 @@ int main() {
     cout << "Por favor ingrese su nombre: ";
     getline(cin, nombre);
 
-    cout << "\n¡Hola, " << nombre << "! 😊 Vamos a comenzar...\n" << endl;
+    cout << "¡Hola, " << nombre << "! 😊 Vamos a comenzar..." << endl;
 
     do {
+        cout << "----------------------------------------------" << endl;
+        cout << "🔢 Calculo #" << contador << endl;
+        cout << "----------------------------------------------" << endl;
+
         // Leer dimensiones
         largo = leerNumero("Ingrese el largo del rectangulo: ");
         ancho = leerNumero("Ingrese el ancho del rectangulo: ");
@@ -78,7 +82,7 @@ int main() {
         perimetro = 2 * (largo + ancho);
 
         // Mostrar resultado
-        cout << "✅ " << nombre << ", el perimetro del rectangulo es: " << perimetro << endl;
+        cout << "✅ " << nombre << ", el perimetro del rectangulo es: " << perimetro << "\n" << endl;
 
         // Guardar en historial
         historial.push_back({contador, largo, ancho, perimetro});
@@ -86,11 +90,12 @@ int main() {
 
         // Preguntar si desea continuar
         opcion = leerOpcion("¿Desea calcular el perimetro de otro rectangulo? (s/n): ");
+        cout << "\n";
 
     } while (opcion == 's' || opcion == 'S');
 
     // Mostrar informe final
-    cout << "\n==============================================" << endl;
+    cout << "==============================================" << endl;
     cout << "📊 Informe de Calculos Realizados por " << nombre << endl;
     cout << "==============================================" << endl;
 
