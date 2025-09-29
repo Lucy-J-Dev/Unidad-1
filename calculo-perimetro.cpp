@@ -2,21 +2,30 @@
 using namespace std;
 
 int main() {
-    // Variables para almacenar las dimensiones del rectángulo
     double largo, ancho, perimetro;
+    char opcion;
 
-    // Pedir al usuario el largo y el ancho
-    cout << "Ingrese el largo del rectangulo: ";
-    cin >> largo;
+    do {
+        // Pedir al usuario las dimensiones
+        cout << "Ingrese el largo del rectangulo: ";
+        cin >> largo;
 
-    cout << "Ingrese el ancho del rectangulo: ";
-    cin >> ancho;
+        cout << "Ingrese el ancho del rectangulo: ";
+        cin >> ancho;
 
-    // Calcular el perimetro
-    perimetro = 2 * (largo + ancho);
+        // Calcular el perímetro
+        perimetro = 2 * (largo + ancho);
 
-    // Mostrar el resultado
-    cout << "El perimetro del rectangulo es: " << perimetro << endl;
+        // Mostrar el resultado
+        cout << "El perimetro del rectangulo es: " << perimetro << endl;
+
+        // Preguntar si desea continuar
+        cout << "¿Desea calcular el perimetro de otro rectangulo? (s/n): ";
+        cin >> opcion;
+
+    } while (opcion == 's' || opcion == 'S');
+
+    cout << "Programa finalizado. ¡Gracias por usarlo!" << endl;
 
     return 0;
 }
